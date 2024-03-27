@@ -559,6 +559,23 @@ class Scaffold:
         self.template_context_processors[None].append(f)
         return f
 
+    def add_context_processor(
+        self,
+        func: T_template_context_processor,
+        name: str | None = None,
+    ) -> T_template_context_processor:
+        """Register a custom template context processor function.  Works exactly like the
+        :meth:`context_processor` decorator.
+
+        :param name: the optional name of the context processor function, otherwise the
+                     function name will be used.
+        """
+        ctx = {
+            name or func.__name__: func
+        }
+        self.template_context_processors[None].append(lambda: ctx)
+        return func
+
     @setupmethod
     def url_value_preprocessor(
         self,
