@@ -198,6 +198,7 @@ class Flask(App):
             "PREFERRED_URL_SCHEME": "http",
             "TEMPLATES_AUTO_RELOAD": None,
             "MAX_COOKIE_SIZE": 4093,
+            "PROVIDE_AUTOMATIC_OPTIONS": True,
         }
     )
 
@@ -240,6 +241,16 @@ class Flask(App):
             instance_relative_config=instance_relative_config,
             root_path=root_path,
         )
+
+        #: The Click command group for registering CLI commands for this
+        #: object. The commands are available from the ``flask`` command
+        #: once the application has been discovered and blueprints have
+        #: been registered.
+        self.cli = cli.AppGroup()
+
+        # Set the name of the Click group in case someone wants to add
+        # the app's commands to another CLI tool.
+        self.cli.name = self.name
 
         # Add a static route using the provided static_url_path, static_host,
         # and static_folder if there is a configured static_folder.
